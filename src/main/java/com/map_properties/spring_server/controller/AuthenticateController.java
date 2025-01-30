@@ -2,6 +2,7 @@ package com.map_properties.spring_server.controller;
 
 import com.map_properties.spring_server.request.AuthRequest;
 import com.map_properties.spring_server.entity.User;
+import com.map_properties.spring_server.exception.LoginException;
 import com.map_properties.spring_server.service.JwtService;
 
 import jakarta.validation.Valid;
@@ -9,7 +10,6 @@ import jakarta.validation.Valid;
 import com.map_properties.spring_server.service.CustomUserDetailsService;
 
 import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 @RestController
 @RequestMapping("/")
@@ -51,40 +49,21 @@ public class AuthenticateController {
     }
 
     @PostMapping("/web-authenticate")
-    public ResponseEntity<Map<String, Object>> authenticateAndGetToken(@Valid @RequestBody AuthRequest authRequest,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, Object> response = new HashMap<>();
-            Map<String, Object> errors = new HashMap<>();
-
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errors.put(error.getField(), new String[] { error.getDefaultMessage() });
-            }
-
-            response.put("errors", errors);
-            return ResponseEntity.status(422).body(errors);
-        }
-
+    public ResponseEntity<Object> authenticateAndGetToken(@Valid @RequestBody AuthRequest authRequest)
+            throws LoginException {
+        Authentication authentication = null;
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
-            if (authentication.isAuthenticated()) {
-                Map<String, Object> response = jwtService.generateToken(authRequest.getEmail());
-                return ResponseEntity.ok(response);
-            } else {
-                Map<String, Object> response = new HashMap<>();
-                response.put("message", "Invalid credentials");
-                return ResponseEntity.status(400).body(response);
-            }
-        } catch (BadCredentialsException exception) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Invalid credentials");
-            return ResponseEntity.status(400).body(response);
-        } catch (Exception exception) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", exception.getMessage());
-            return ResponseEntity.status(400).body(response);
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
+                            authRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new LoginException("Invalid credentials");
         }
-
+        if (authentication.isAuthenticated()) {
+            Map<String, Object> response = jwtService.generateToken(authRequest.getEmail());
+            return ResponseEntity.ok(response);
+        } else {
+            throw new LoginException("Invalid credentials");
+        }
     }
 }
