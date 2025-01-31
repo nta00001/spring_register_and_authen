@@ -31,7 +31,7 @@ public class ExceptionControllerAdvice {
     private ResponseEntity<ErrorMessage> handleLoginException(
             LoginException ex) {
         return new ResponseEntity<ErrorMessage>(
-                new ErrorMessage("Invalid credentials", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+                new ErrorMessage(ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler // Invalid validation requests

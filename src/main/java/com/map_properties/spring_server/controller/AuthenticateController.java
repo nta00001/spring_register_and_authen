@@ -33,11 +33,6 @@ public class AuthenticateController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome this endpoint is not secure";
-    }
-
     @PostMapping("/add-new-user")
     public String addNewUser(@RequestBody User userInfo) {
         return service.addUser(userInfo);
@@ -57,13 +52,13 @@ public class AuthenticateController {
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                             authRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            throw new LoginException("Invalid credentials");
+            throw new LoginException("Email or Password is incorrect");
         }
         if (authentication.isAuthenticated()) {
             Map<String, Object> response = jwtService.generateToken(authRequest.getEmail());
             return ResponseEntity.ok(response);
         } else {
-            throw new LoginException("Invalid credentials");
+            throw new LoginException("Email or Password is incorrect");
         }
     }
 }
