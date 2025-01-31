@@ -16,6 +16,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.map_properties.spring_server.entity.enums.Role;
+
+import com.map_properties.spring_server.response.ErrorMessage;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -31,9 +38,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
             String authHeader = request.getHeader("Authorization");
             String token = null;
-            String username = null;
+            String email = null;
 
             // Skip token validation for permitted endpoints
             String path = request.getServletPath();
@@ -46,16 +56,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
                 try {
-                    username = jwtService.extractEmail(token);
+                    email = jwtService.extractEmail(token);
                 } catch (Exception e) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().write("Invalid JWT token");
+                    String json = new Gson()
+                            .toJson(new ErrorMessage("Invalid JWT token", HttpServletResponse.SC_UNAUTHORIZED));
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().write(json);
                     return;
                 }
             }
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // middleware permission check
+
+            String method = request.getMethod();
+            List<String> roles = jwtService.extractRoles(token);
+            if (path.contains("/me") && method.equals("GET") &&
+                    roles.contains(Role.ROLE_ADMIN.toString())) {
+                String json = new Gson().toJson(new ErrorMessage("No Permission",
+                        HttpServletResponse.SC_FORBIDDEN));
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write(json);
+                return;
+            }
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 if (jwtService.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
@@ -68,8 +93,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {
+            String json = new Gson()
+                    .toJson(new ErrorMessage("Authentication failed", HttpServletResponse.SC_UNAUTHORIZED));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Authentication failed");
+            response.getWriter().write(json);
         }
     }
 }

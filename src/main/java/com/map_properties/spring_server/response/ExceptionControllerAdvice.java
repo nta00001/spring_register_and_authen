@@ -1,8 +1,5 @@
 package com.map_properties.spring_server.response;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,33 +51,5 @@ public class ExceptionControllerAdvice {
             Exception ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Getter
-    @Setter
-    class ErrorMessage {
-        private String message;
-        private Integer status;
-
-        public ErrorMessage(String message) {
-            this.message = message;
-            this.status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-        }
-
-        public ErrorMessage(String message, Integer status) {
-            this.message = message;
-            this.status = status;
-        }
-    }
-
-    @Getter
-    @Setter
-    class ErrorValidationResponse extends ErrorMessage {
-        private Object errors;
-
-        public ErrorValidationResponse(Map<String, Object> errors) {
-            super("Validation failed!", HttpStatus.UNPROCESSABLE_ENTITY.value());
-            this.errors = errors;
-        }
     }
 }
