@@ -1,6 +1,7 @@
 package com.map_properties.spring_server.entity;
 
 import java.util.Date;
+import java.util.UUID;
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -30,6 +31,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uuid", updatable = false, nullable = false)
+    private UUID uuid = UUID.randomUUID();
+
     @Column(nullable = false)
     private String name;
 
@@ -41,6 +45,12 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = true)
+    private String avatarUrl;
+
+    @Column(nullable = false)
+    private Boolean isAdmin = false;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

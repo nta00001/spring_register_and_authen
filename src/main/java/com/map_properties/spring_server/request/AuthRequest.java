@@ -2,6 +2,7 @@ package com.map_properties.spring_server.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class AuthRequest {
     private String email;
 
     @NotEmpty(message = "Password cannot be empty")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
 }

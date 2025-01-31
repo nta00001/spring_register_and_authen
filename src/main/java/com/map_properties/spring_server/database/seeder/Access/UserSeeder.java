@@ -37,6 +37,7 @@ public class UserSeeder implements ApplicationRunner {
                     put("name", "administrator");
                     put("email", "sysadmin@hp.com");
                     put("password", "12345678");
+                    put("is_admin", true);
                 }
             }
     };
@@ -60,6 +61,7 @@ public class UserSeeder implements ApplicationRunner {
                 user.setName((String) _user.get("name"));
                 user.setEmail((String) _user.get("email"));
                 user.setPassword(encoder.encode((String) _user.get("password")));
+                user.setIsAdmin((Boolean) _user.get("is_admin"));
                 userRepository.save(user);
             }
         }
