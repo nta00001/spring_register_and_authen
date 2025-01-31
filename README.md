@@ -14,7 +14,7 @@ A bash script to create an automatic log archive tool.
 
 2. **Phân quyền**
 
-Có 2 cách:
+Hiện tại có 3 cách:
 
 - Cách 1:
   - Thêm role vào claim của jwt token
@@ -23,3 +23,8 @@ Có 2 cách:
 - Cách 2:
   - Add role vào phương thức getAuthorities()
   - Dùng PreAuthorize hasAuthroity
+- Cách 3:
+  - Tạo 1 annotation Permission chứa role
+  - Tạo 1 Component Interceptor implements HandlerInterceptor
+  - Tạo 1 Component InterceptorConfig implements WebMvcConfigurer với order LOWEST_PRECEDENCE
+  - Dùng annotation Permission
