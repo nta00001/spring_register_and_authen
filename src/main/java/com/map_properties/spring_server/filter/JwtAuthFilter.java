@@ -68,16 +68,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             // middleware permission check
 
-            String method = request.getMethod();
-            List<String> roles = jwtService.extractRoles(token);
-            if (path.contains("/me") && method.equals("GET") &&
-                    roles.contains(Role.ROLE_ADMIN.toString())) {
-                String json = new Gson().toJson(new ErrorMessage("No Permission",
-                        HttpServletResponse.SC_FORBIDDEN));
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().write(json);
-                return;
-            }
+            // String method = request.getMethod();
+            // List<String> roles = jwtService.extractRoles(token);
+            // if (path.contains("/me") && method.equals("GET") &&
+            // roles.contains(Role.ROLE_ADMIN.toString())) {
+            // String json = new Gson().toJson(new ErrorMessage("No Permission",
+            // HttpServletResponse.SC_FORBIDDEN));
+            // response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            // response.getWriter().write(json);
+            // return;
+            // }
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
