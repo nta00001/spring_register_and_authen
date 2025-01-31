@@ -1,4 +1,4 @@
-package com.map_properties.spring_server.response;
+package com.map_properties.spring_server.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.map_properties.spring_server.exception.LoginException;
+import com.map_properties.spring_server.response.ErrorMessage;
+import com.map_properties.spring_server.response.ErrorValidationResponse;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
