@@ -1,6 +1,7 @@
 package com.map_properties.spring_server.config;
 
 import com.map_properties.spring_server.filter.JwtAuthFilter;
+import com.map_properties.spring_server.service.CustomUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +28,10 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthFilter authFilter;
 
-    @Autowired
-    UserDetailsService userDetailsService;
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new CustomUserDetailsService(); // Ensure UserInfoService implements UserDetailsService
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }

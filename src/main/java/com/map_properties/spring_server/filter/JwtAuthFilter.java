@@ -45,14 +45,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String token = null;
             String email = null;
 
-            // Skip token validation for permitted endpoints
-            String path = request.getServletPath();
-            if (path.contains("/welcome") ||
-                    path.contains("/web-authenticate")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
                 try {
@@ -68,6 +60,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             // middleware permission check
 
+            // String path = request.getServletPath();
             // String method = request.getMethod();
             // List<String> roles = jwtService.extractRoles(token);
             // if (path.contains("/me") && method.equals("GET") &&

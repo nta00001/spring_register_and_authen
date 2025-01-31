@@ -31,11 +31,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return user;
     }
-
-    public String addUser(User user) {
-        // Encode password before saving the user
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return "User Added Successfully";
-    }
 }
