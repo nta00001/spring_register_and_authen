@@ -1,13 +1,10 @@
 package com.map_properties.spring_server.controller;
 
 import com.map_properties.spring_server.request.AuthRequest;
-import com.map_properties.spring_server.entity.User;
 import com.map_properties.spring_server.exception.LoginException;
 import com.map_properties.spring_server.service.JwtService;
 
 import jakarta.validation.Valid;
-
-import com.map_properties.spring_server.service.CustomUserDetailsService;
 
 import java.util.Map;
 
@@ -25,18 +22,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticateController {
 
     @Autowired
-    private CustomUserDetailsService service;
-
-    @Autowired
     private JwtService jwtService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @PostMapping("/add-new-user")
-    public String addNewUser(@RequestBody User userInfo) {
-        return service.addUser(userInfo);
-    }
 
     @GetMapping("/me")
     public String userProfile() {

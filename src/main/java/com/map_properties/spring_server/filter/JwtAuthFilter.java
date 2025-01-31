@@ -38,7 +38,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // Skip token validation for permitted endpoints
             String path = request.getServletPath();
             if (path.contains("/welcome") ||
-                    path.contains("/add-new-user") ||
                     path.contains("/web-authenticate")) {
                 filterChain.doFilter(request, response);
                 return;
