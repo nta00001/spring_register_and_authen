@@ -32,16 +32,16 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     private String SECRET;
 
-    @Autowired
-    UserRepository userRepository;
+    // @Autowired
+    // UserRepository userRepository;
 
     // Generate token with given user name
     public Map<String, Object> generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        User user = userRepository.findByEmail(email);
-        if (user.getIsAdmin()) {
-            claims.put("roles", List.of(Role.ROLE_ADMIN.toString())); // Store as String
-        }
+        // User user = userRepository.findByEmail(email);
+        // if (user.getIsAdmin()) {
+        // claims.put("roles", List.of(Role.ROLE_ADMIN.toString())); // Store as String
+        // }
         return createToken(claims, email);
     }
 
@@ -83,20 +83,20 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public List<String> extractRoles(String token) {
-        Claims claims = extractAllClaims(token);
-        Object rolesObject = claims.get("roles");
+    // public List<String> extractRoles(String token) {
+    // Claims claims = extractAllClaims(token);
+    // Object rolesObject = claims.get("roles");
 
-        if (rolesObject instanceof List<?>) {
-            List<?> rolesList = (List<?>) rolesObject;
-            return rolesList.stream()
-                    .filter(role -> role instanceof String) // Ensure type safety
-                    .map(role -> (String) role) // Cast to String
-                    .collect(Collectors.toList());
-        }
+    // if (rolesObject instanceof List<?>) {
+    // List<?> rolesList = (List<?>) rolesObject;
+    // return rolesList.stream()
+    // .filter(role -> role instanceof String) // Ensure type safety
+    // .map(role -> (String) role) // Cast to String
+    // .collect(Collectors.toList());
+    // }
 
-        return new ArrayList<>(); // Return an empty list if roles are not found
-    }
+    // return new ArrayList<>(); // Return an empty list if roles are not found
+    // }
 
     // Extract all claims from the token
     private Claims extractAllClaims(String token) {
