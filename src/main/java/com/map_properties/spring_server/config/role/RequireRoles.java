@@ -10,6 +10,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Roles {
+public @interface RequireRoles {
     ERole[] value();
 }

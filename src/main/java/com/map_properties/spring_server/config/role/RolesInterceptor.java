@@ -35,7 +35,7 @@ public class RolesInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        if (!handlerMethod.hasMethodAnnotation(Roles.class)) {
+        if (!handlerMethod.hasMethodAnnotation(RequireRoles.class)) {
             return true;
         }
 
@@ -53,7 +53,7 @@ public class RolesInterceptor implements HandlerInterceptor {
         String token = authHeader.substring(7);
         List<String> claimRoles = jwtService.extractRoles(token);
 
-        Roles permissions = handlerMethod.getMethodAnnotation(Roles.class);
+        RequireRoles permissions = handlerMethod.getMethodAnnotation(RequireRoles.class);
         if (permissions == null) {
             return true;
         }
