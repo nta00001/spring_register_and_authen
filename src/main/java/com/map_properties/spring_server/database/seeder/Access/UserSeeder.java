@@ -12,8 +12,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.map_properties.spring_server.entity.Role;
 import com.map_properties.spring_server.entity.User;
+import com.map_properties.spring_server.enums.ERole;
+import com.map_properties.spring_server.repository.RoleRepository;
 import com.map_properties.spring_server.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,9 @@ public class UserSeeder implements ApplicationRunner {
     UserRepository userRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder encoder;
 
     @SuppressWarnings("unchecked")
@@ -37,7 +44,15 @@ public class UserSeeder implements ApplicationRunner {
                     put("name", "administrator");
                     put("email", "sysadmin@hp.com");
                     put("password", "12345678");
-                    put("is_admin", true);
+                    put("roles", new String[] { ERole.ROLE_ADMIN.getCode() });
+                }
+            },
+            new HashMap<String, Object>() {
+                {
+                    put("name", "ChiCong");
+                    put("email", "chicongpham235@gmail.com");
+                    put("password", "12345678");
+                    put("roles", new String[] { ERole.ROLE_USER.getCode(), ERole.ROLE_ADMIN.getCode() });
                 }
             }
     };
@@ -53,17 +68,24 @@ public class UserSeeder implements ApplicationRunner {
         }
     }
 
+    @Transactional
     public void seed() {
         for (Map<String, Object> _user : _users) {
             User user = userRepository.findByEmail((String) _user.get("email"));
-            if (user == null) {
-                user = new User();
-                user.setName((String) _user.get("name"));
-                user.setEmail((String) _user.get("email"));
-                user.setPassword(encoder.encode((String) _user.get("password")));
-                user.setIsAdmin((Boolean) _user.get("is_admin"));
-                userRepository.save(user);
+            if (user != null) {
+                continue;
             }
+            final User finalUser = new User();
+            finalUser.setName((String) _user.get("name"));
+            finalUser.setEmail((String) _user.get("email"));
+            finalUser.setPassword(encoder.encode((String) _user.get("password")));
+            Arrays.asList((String[]) _user.get("roles")).forEach(_role -> {
+                Role role = roleRepository.findByCode(_role);
+                if (role != null) {
+                    finalUser.addRole(role);
+                }
+            });
+            userRepository.save(finalUser);
         }
     }
 }

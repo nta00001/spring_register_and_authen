@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.map_properties.spring_server.entity.User;
-import com.map_properties.spring_server.entity.enums.Role;
+import com.map_properties.spring_server.enums.ERole;
 import com.map_properties.spring_server.repository.UserRepository;
 
 import java.security.Key;
@@ -36,11 +37,12 @@ public class JwtService {
     UserRepository userRepository;
 
     // Generate token with given user name
+    @Transactional
     public Map<String, Object> generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         User user = userRepository.findByEmail(email);
-        if (user.getIsAdmin()) {
-            claims.put("roles", List.of(Role.ROLE_ADMIN.toString())); // Store as String
+        if (user.getRoles() != null) {
+            claims.put("roles", user.getRoles().stream().map((role -> role.getCode())).collect(Collectors.toList()));
         }
         return createToken(claims, email);
     }

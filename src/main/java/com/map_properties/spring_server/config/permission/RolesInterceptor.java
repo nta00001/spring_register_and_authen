@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.google.gson.Gson;
 import com.map_properties.spring_server.dto.ErrorMessageDTO;
-import com.map_properties.spring_server.entity.enums.Role;
+import com.map_properties.spring_server.enums.ERole;
 import com.map_properties.spring_server.service.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Component
-public class PermissionsInterceptor implements HandlerInterceptor {
+public class RolesInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtService jwtService;
@@ -35,7 +35,7 @@ public class PermissionsInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        if (!handlerMethod.hasMethodAnnotation(Permissions.class)) {
+        if (!handlerMethod.hasMethodAnnotation(Roles.class)) {
             return true;
         }
 
@@ -53,15 +53,17 @@ public class PermissionsInterceptor implements HandlerInterceptor {
         String token = authHeader.substring(7);
         List<String> claimRoles = jwtService.extractRoles(token);
 
-        Permissions permissions = handlerMethod.getMethodAnnotation(Permissions.class);
+        Roles permissions = handlerMethod.getMethodAnnotation(Roles.class);
         if (permissions == null) {
             return true;
         }
-        Role[] requiredRoles = permissions.value(); // Get the value of the Permissions annotation
+        ERole[] requiredRoles = permissions.value(); // Get the value of
+                                                     // the Permissions
+                                                     // annotation
 
         // Check if the user has any of the required roles
         List<String> requireStringdRoles = Arrays.stream(requiredRoles)
-                .map(Role::toString)
+                .map(ERole::getCode)
                 .collect(Collectors.toList());
 
         // Check if any of the user's roles match the required roles

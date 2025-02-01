@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.map_properties.spring_server.database.seeder.Access.RoleSeeder;
 import com.map_properties.spring_server.database.seeder.Access.UserSeeder;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,9 @@ public class DatabaseSeeder implements ApplicationRunner {
 
     @Autowired
     UserSeeder userSeeder;
+
+    @Autowired
+    RoleSeeder rolesSeeder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -34,6 +38,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     }
 
     public void seed() {
+        rolesSeeder.seed();
         userSeeder.seed();
     }
 }

@@ -9,5 +9,4 @@ public class UserDTO {
     private String uuid;
     private String email;
     private String avatarUrl;
-    private Boolean isAdmin;
 }

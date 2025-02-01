@@ -7,11 +7,11 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
-public class PermissionsInterceptorConfig implements WebMvcConfigurer {
-    private final PermissionsInterceptor permissionsInterceptor;
+public class RolesInterceptorConfig implements WebMvcConfigurer {
+    private final RolesInterceptor permissionsInterceptor;
 
     @Autowired
-    public PermissionsInterceptorConfig(PermissionsInterceptor permissionsInterceptor) {
+    public RolesInterceptorConfig(RolesInterceptor permissionsInterceptor) {
         this.permissionsInterceptor = permissionsInterceptor;
     }
 
