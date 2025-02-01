@@ -1,6 +1,7 @@
 package com.map_properties.spring_server.filter;
 
 import com.map_properties.spring_server.service.JwtService;
+import com.map_properties.spring_server.dto.ErrorMessageDTO;
 import com.map_properties.spring_server.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,13 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 import com.google.gson.Gson;
-import com.map_properties.spring_server.entity.enums.Role;
-
-import com.map_properties.spring_server.response.ErrorMessage;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -51,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     email = jwtService.extractEmail(token);
                 } catch (Exception e) {
                     String json = new Gson()
-                            .toJson(new ErrorMessage("Invalid JWT token", HttpServletResponse.SC_UNAUTHORIZED));
+                            .toJson(new ErrorMessageDTO("Invalid JWT token", HttpServletResponse.SC_UNAUTHORIZED));
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     response.getWriter().write(json);
                     return;
@@ -87,7 +83,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             String json = new Gson()
-                    .toJson(new ErrorMessage("Authentication failed", HttpServletResponse.SC_UNAUTHORIZED));
+                    .toJson(new ErrorMessageDTO("Authentication failed", HttpServletResponse.SC_UNAUTHORIZED));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(json);
         }

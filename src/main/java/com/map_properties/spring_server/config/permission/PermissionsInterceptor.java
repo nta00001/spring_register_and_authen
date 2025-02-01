@@ -11,6 +11,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.google.gson.Gson;
+import com.map_properties.spring_server.dto.ErrorMessageDTO;
 import com.map_properties.spring_server.entity.enums.Role;
 import com.map_properties.spring_server.service.JwtService;
 
@@ -18,8 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
-
-import com.map_properties.spring_server.response.ErrorMessage;
 
 @Log4j2
 @Component
@@ -45,7 +44,7 @@ public class PermissionsInterceptor implements HandlerInterceptor {
 
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            String json = new Gson().toJson(new ErrorMessage("No Permission",
+            String json = new Gson().toJson(new ErrorMessageDTO("No Permission",
                     HttpServletResponse.SC_FORBIDDEN));
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(json);
@@ -70,7 +69,7 @@ public class PermissionsInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String json = new Gson().toJson(new ErrorMessage("No Permission",
+        String json = new Gson().toJson(new ErrorMessageDTO("No Permission",
                 HttpServletResponse.SC_FORBIDDEN));
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write(json);

@@ -1,4 +1,4 @@
-package com.map_properties.spring_server.response;
+package com.map_properties.spring_server.dto;
 
 import java.util.Map;
 
@@ -9,10 +9,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ErrorValidationResponse extends ErrorMessage {
+public class ErrorValidationDTO extends ErrorMessageDTO {
     private Object errors;
 
-    public ErrorValidationResponse(Map<String, Object> errors) {
+    public ErrorValidationDTO(Map<String, Object> errors) {
         super("Validation failed!", HttpStatus.UNPROCESSABLE_ENTITY.value());
         this.errors = errors;
     }

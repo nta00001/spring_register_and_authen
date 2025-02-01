@@ -13,29 +13,29 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.map_properties.spring_server.dto.ErrorMessageDTO;
+import com.map_properties.spring_server.dto.ErrorValidationDTO;
 import com.map_properties.spring_server.exception.LoginException;
-import com.map_properties.spring_server.response.ErrorMessage;
-import com.map_properties.spring_server.response.ErrorValidationResponse;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler // when Invalid Credentials
-    private ResponseEntity<ErrorMessage> handleInvalidCredentialsException(
+    private ResponseEntity<ErrorMessageDTO> handleInvalidCredentialsException(
             BadCredentialsException ex) {
-        return new ResponseEntity<ErrorMessage>(
-                new ErrorMessage("Invalid credentials", HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<ErrorMessageDTO>(
+                new ErrorMessageDTO("Invalid credentials", HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler // when login failed
-    private ResponseEntity<ErrorMessage> handleLoginException(
+    private ResponseEntity<ErrorMessageDTO> handleLoginException(
             LoginException ex) {
-        return new ResponseEntity<ErrorMessage>(
-                new ErrorMessage(ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ErrorMessageDTO>(
+                new ErrorMessageDTO(ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler // Invalid validation requests
-    private ResponseEntity<ErrorValidationResponse> handleMethodArgumentNotValid(
+    private ResponseEntity<ErrorValidationDTO> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
 
@@ -45,21 +45,21 @@ public class ExceptionControllerAdvice {
             errors.put(error.getField(), new String[] { error.getDefaultMessage() });
         }
 
-        ErrorValidationResponse response = new ErrorValidationResponse(errors);
-        return new ResponseEntity<ErrorValidationResponse>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        ErrorValidationDTO response = new ErrorValidationDTO(errors);
+        return new ResponseEntity<ErrorValidationDTO>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler // No Resource Found Exception handler
-    private ResponseEntity<ErrorMessage> handleNoResourceFoundException(
+    private ResponseEntity<ErrorMessageDTO> handleNoResourceFoundException(
             NoResourceFoundException ex) {
-        return new ResponseEntity<ErrorMessage>(
-                new ErrorMessage(ex.getMessage(), ex.getStatusCode().value()), ex.getStatusCode());
+        return new ResponseEntity<ErrorMessageDTO>(
+                new ErrorMessageDTO(ex.getMessage(), ex.getStatusCode().value()), ex.getStatusCode());
     }
 
     @ExceptionHandler // other ExceptionHandler
-    private ResponseEntity<ErrorMessage> handleOthersException(
+    private ResponseEntity<ErrorMessageDTO> handleOthersException(
             Exception ex) {
-        return new ResponseEntity<ErrorMessage>(
-                new ErrorMessage(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<ErrorMessageDTO>(
+                new ErrorMessageDTO(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

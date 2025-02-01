@@ -8,12 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.map_properties.spring_server.dto.AuthResponseDTO;
 import com.map_properties.spring_server.dto.UserDTO;
+import com.map_properties.spring_server.dto.UserDetailDTO;
 import com.map_properties.spring_server.entity.User;
 import com.map_properties.spring_server.exception.LoginException;
 import com.map_properties.spring_server.request.AuthRequest;
-import com.map_properties.spring_server.response.AuthResponse;
-import com.map_properties.spring_server.response.UserDetail;
 import com.map_properties.spring_server.service.JwtService;
 import com.map_properties.spring_server.service.UserService;
 import com.map_properties.spring_server.utils.CastUtil;
@@ -31,14 +31,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public UserDetail getMe() {
+    public UserDetailDTO getMe() {
         User user = UserUtil.getUser();
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        UserDetail userDetail = new UserDetail(userDTO);
+        UserDetailDTO userDetail = new UserDetailDTO(userDTO);
         return userDetail;
     }
 
-    public AuthResponse webAuthenticate(AuthRequest authRequest) throws LoginException {
+    public AuthResponseDTO webAuthenticate(AuthRequest authRequest) throws LoginException {
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         }
         if (authentication.isAuthenticated()) {
             Object response = jwtService.generateToken(authRequest.getEmail());
-            AuthResponse authResponse = CastUtil.convertToClass(response, AuthResponse.class);
+            AuthResponseDTO authResponse = CastUtil.convertToClass(response, AuthResponseDTO.class);
             return authResponse;
         } else {
             throw new LoginException("Email or Password is incorrect");
