@@ -8,8 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.map_properties.spring_server.enums.ERole;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,8 +29,7 @@ public class Role {
     private Integer sort;
 
     @Column(nullable = false, unique = true, length = 20)
-    @Enumerated(EnumType.STRING)
-    private ERole code;
+    private String code;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

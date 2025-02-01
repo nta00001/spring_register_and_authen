@@ -63,7 +63,7 @@ public class RolesInterceptor implements HandlerInterceptor {
 
         // Check if the user has any of the required roles
         List<String> requireStringdRoles = Arrays.stream(requiredRoles)
-                .map(ERole::toString)
+                .map(ERole::getCode)
                 .collect(Collectors.toList());
 
         // Check if any of the user's roles match the required roles

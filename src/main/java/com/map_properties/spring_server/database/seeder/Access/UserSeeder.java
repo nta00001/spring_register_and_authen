@@ -44,7 +44,7 @@ public class UserSeeder implements ApplicationRunner {
                     put("name", "administrator");
                     put("email", "sysadmin@hp.com");
                     put("password", "12345678");
-                    put("roles", new ERole[] { ERole.admin });
+                    put("roles", new String[] { ERole.ROLE_ADMIN.getCode() });
                 }
             },
             new HashMap<String, Object>() {
@@ -52,7 +52,7 @@ public class UserSeeder implements ApplicationRunner {
                     put("name", "ChiCong");
                     put("email", "chicongpham235@gmail.com");
                     put("password", "12345678");
-                    put("roles", new ERole[] { ERole.admin, ERole.user });
+                    put("roles", new String[] { ERole.ROLE_USER.getCode(), ERole.ROLE_ADMIN.getCode() });
                 }
             }
     };
@@ -79,7 +79,7 @@ public class UserSeeder implements ApplicationRunner {
             finalUser.setName((String) _user.get("name"));
             finalUser.setEmail((String) _user.get("email"));
             finalUser.setPassword(encoder.encode((String) _user.get("password")));
-            Arrays.asList((ERole[]) _user.get("roles")).forEach(_role -> {
+            Arrays.asList((String[]) _user.get("roles")).forEach(_role -> {
                 Role role = roleRepository.findByCode(_role);
                 if (role != null) {
                     finalUser.addRole(role);
