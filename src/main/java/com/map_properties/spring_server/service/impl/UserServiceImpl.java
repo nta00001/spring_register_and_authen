@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         return userDetail;
     }
 
-    public AuthResponseDTO webAuthenticate(AuthRequest authRequest) throws LoginException {
+    public AuthResponseDTO webAuthenticate(AuthRequest authRequest) {
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(

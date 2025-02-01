@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private PasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {

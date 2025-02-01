@@ -27,8 +27,7 @@ public class AuthenticateController {
     }
 
     @PostMapping("/web-authenticate")
-    public ResponseEntity<AuthResponseDTO> webAuthenticate(@Valid @RequestBody AuthRequest authRequest)
-            throws LoginException {
+    public ResponseEntity<AuthResponseDTO> webAuthenticate(@Valid @RequestBody AuthRequest authRequest) {
         AuthResponseDTO authResponse = userService.webAuthenticate(authRequest);
         return ResponseEntity.ok(authResponse);
     }
