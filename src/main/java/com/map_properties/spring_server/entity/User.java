@@ -68,9 +68,9 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (isAdmin) {
-            authorities.add(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
-        }
+        // if (isAdmin) {
+        // authorities.add(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
+        // }
         return authorities;
     }
 
