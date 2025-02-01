@@ -32,15 +32,15 @@ public class RoleSeeder implements ApplicationRunner {
     Map<String, Object>[] _roles = new HashMap[] {
             new HashMap<String, Object>() {
                 {
-                    put("code", ERole.ROLE_ADMIN.getCode());
-                    put("name", ERole.ROLE_ADMIN.getName());
+                    put("code", ERole.admin);
+                    put("name", "Quản trị hệ thống");
                     put("sort", 1);
                 }
             },
             new HashMap<String, Object>() {
                 {
-                    put("code", ERole.ROLE_USER.getCode());
-                    put("name", ERole.ROLE_USER.getName());
+                    put("code", ERole.user);
+                    put("name", "Người dùng");
                     put("sort", 2);
                 }
             }
@@ -60,10 +60,10 @@ public class RoleSeeder implements ApplicationRunner {
     @Transactional
     public void seed() {
         for (Map<String, Object> _role : _roles) {
-            Role role = roleRepository.findByCode((String) _role.get("code"));
+            Role role = roleRepository.findByCode((ERole) _role.get("code"));
             if (role == null) {
                 role = new Role();
-                role.setCode((String) _role.get("code"));
+                role.setCode((ERole) _role.get("code"));
                 role.setName((String) _role.get("name"));
                 role.setSort((Integer) _role.get("sort"));
                 roleRepository.save(role);

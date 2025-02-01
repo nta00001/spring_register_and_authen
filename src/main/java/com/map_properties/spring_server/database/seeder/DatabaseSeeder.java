@@ -24,7 +24,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     UserSeeder userSeeder;
 
     @Autowired
-    RoleSeeder rolesSeeder;
+    RoleSeeder roleSeeder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -38,7 +38,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     }
 
     public void seed() {
-        rolesSeeder.seed();
+        roleSeeder.seed();
         userSeeder.seed();
     }
 }

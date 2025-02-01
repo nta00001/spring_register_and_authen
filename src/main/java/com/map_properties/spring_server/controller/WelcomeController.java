@@ -18,14 +18,14 @@ public class WelcomeController {
     }
 
     // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @Roles({ ERole.ROLE_ADMIN })
+    @Roles({ ERole.admin })
     @GetMapping("/admin/welcome")
     public String welcomeAdmin() {
         return "Welcome this endpoint is for admin";
     }
 
     // @PreAuthorize("hasAuthority('ROLE_USER')")
-    @Roles({ ERole.ROLE_USER })
+    @Roles({ ERole.user })
     @GetMapping("/user/welcome")
     public String welcomeUser() {
         return "Welcome this endpoint is for user";
