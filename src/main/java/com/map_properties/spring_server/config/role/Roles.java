@@ -1,4 +1,4 @@
-package com.map_properties.spring_server.config.permission;
+package com.map_properties.spring_server.config.role;
 
 import java.lang.annotation.Target;
 

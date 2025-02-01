@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.map_properties.spring_server.config.permission.Roles;
+import com.map_properties.spring_server.config.role.Roles;
 import com.map_properties.spring_server.enums.ERole;
 
 @RestController

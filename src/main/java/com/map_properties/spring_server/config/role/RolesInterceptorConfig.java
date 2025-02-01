@@ -1,4 +1,4 @@
-package com.map_properties.spring_server.config.permission;
+package com.map_properties.spring_server.config.role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
