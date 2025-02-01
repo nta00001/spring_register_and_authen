@@ -4,7 +4,13 @@ A bash script to create an automatic log archive tool.
 
 ## Getting Started
 
-1. **Seeder**
+1. **Env**
+
+   ```shell
+   cp .env.example .env.local
+   ```
+
+2. **Seeder**
 
    add arguments
 
@@ -12,7 +18,7 @@ A bash script to create an automatic log archive tool.
     --seeder=all
    ```
 
-2. **Phân quyền**
+3. **Phân quyền**
 
 Hiện tại có 3 cách:
 

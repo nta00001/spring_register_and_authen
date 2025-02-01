@@ -6,8 +6,6 @@ server:
 spring:
   application:
     name: map-properties-service
-  config:
-    import: optional:file:.env[.properties]
   main:
     allow-bean-definition-overriding: true
   datasource:
