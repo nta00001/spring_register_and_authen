@@ -39,7 +39,7 @@ public class Role {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     Set<User> users = new HashSet<>();
 
     public void addUser(User user) {
