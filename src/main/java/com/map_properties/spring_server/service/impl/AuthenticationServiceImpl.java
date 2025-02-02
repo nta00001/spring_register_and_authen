@@ -12,15 +12,16 @@ import com.map_properties.spring_server.dto.UserWithRolesDTO;
 import com.map_properties.spring_server.dto.UserWithRolesDetailDTO;
 import com.map_properties.spring_server.entity.User;
 import com.map_properties.spring_server.exception.LoginException;
+import com.map_properties.spring_server.mapper.UserWithRolesMapper;
 import com.map_properties.spring_server.repository.UserRepository;
 import com.map_properties.spring_server.request.AuthRequest;
 import com.map_properties.spring_server.service.JwtService;
-import com.map_properties.spring_server.service.UserService;
+import com.map_properties.spring_server.service.AuthenticationService;
 import com.map_properties.spring_server.utils.CastUtil;
 import com.map_properties.spring_server.utils.UserUtil;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     UserRepository userRepository;
@@ -31,14 +32,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    UserWithRolesMapper userMapper;
+
     public UserWithRolesDetailDTO getMe() {
         User user = UserUtil.getUser();
         if (user == null) {
             throw new BadCredentialsException("Invalid Credentials");
         }
-        User userWithRoles = userRepository.findByIdWithRoles(user.getId()).orElseThrow(
-                () -> new RuntimeException("Not found user id: " + user.getId()));
-        UserWithRolesDTO userWithRolesDTO = new UserWithRolesDTO(userWithRoles);
+        UserWithRolesDTO userWithRolesDTO = userMapper.toDTO(user);
         UserWithRolesDetailDTO userDetail = new UserWithRolesDetailDTO(userWithRolesDTO);
         return userDetail;
     }

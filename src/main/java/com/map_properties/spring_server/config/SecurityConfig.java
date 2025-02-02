@@ -3,7 +3,6 @@ package com.map_properties.spring_server.config;
 import com.map_properties.spring_server.filter.JwtAuthFilter;
 import com.map_properties.spring_server.service.CustomUserDetailsService;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
     @Autowired
     private JwtAuthFilter authFilter;

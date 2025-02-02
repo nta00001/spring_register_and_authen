@@ -4,7 +4,7 @@ import com.map_properties.spring_server.dto.AuthResponseDTO;
 import com.map_properties.spring_server.dto.UserWithRolesDetailDTO;
 import com.map_properties.spring_server.request.AuthRequest;
 
-public interface UserService {
+public interface AuthenticationService {
     UserWithRolesDetailDTO getMe();
 
     AuthResponseDTO webAuthenticate(AuthRequest authRequest);
