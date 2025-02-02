@@ -66,6 +66,11 @@ public class User implements UserDetails {
         role.getUsers().add(this);
     }
 
+    public void removeRole(Role role) {
+        roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

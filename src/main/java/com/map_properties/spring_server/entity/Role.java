@@ -49,4 +49,9 @@ public class Role {
         users.add(user);
         user.getRoles().add(this);
     }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        user.getRoles().remove(this);
+    }
 }
