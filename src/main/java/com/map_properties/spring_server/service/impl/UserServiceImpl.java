@@ -1,6 +1,5 @@
 package com.map_properties.spring_server.service.impl;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,10 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.map_properties.spring_server.dto.AuthResponseDTO;
-import com.map_properties.spring_server.dto.UserDTO;
-import com.map_properties.spring_server.dto.UserDetailDTO;
+import com.map_properties.spring_server.dto.UserWithRolesDTO;
+import com.map_properties.spring_server.dto.UserWithRolesDetailDTO;
 import com.map_properties.spring_server.entity.User;
 import com.map_properties.spring_server.exception.LoginException;
+import com.map_properties.spring_server.repository.UserRepository;
 import com.map_properties.spring_server.request.AuthRequest;
 import com.map_properties.spring_server.service.JwtService;
 import com.map_properties.spring_server.service.UserService;
@@ -23,7 +23,7 @@ import com.map_properties.spring_server.utils.UserUtil;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    ModelMapper modelMapper;
+    UserRepository userRepository;
 
     @Autowired
     private JwtService jwtService;
@@ -31,10 +31,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public UserDetailDTO getMe() {
+    public UserWithRolesDetailDTO getMe() {
         User user = UserUtil.getUser();
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        UserDetailDTO userDetail = new UserDetailDTO(userDTO);
+        if (user == null) {
+            throw new BadCredentialsException("Invalid Credentials");
+        }
+        User userWithRoles = userRepository.findByIdWithRoles(user.getId()).orElseThrow(
+                () -> new RuntimeException("Not found user id: " + user.getId()));
+        UserWithRolesDTO userWithRolesDTO = new UserWithRolesDTO(userWithRoles);
+        UserWithRolesDetailDTO userDetail = new UserWithRolesDetailDTO(userWithRolesDTO);
         return userDetail;
     }
 
