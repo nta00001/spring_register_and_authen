@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -43,6 +45,7 @@ public class Role {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Set<User> users = new HashSet<>();
 
     public void addUser(User user) {
