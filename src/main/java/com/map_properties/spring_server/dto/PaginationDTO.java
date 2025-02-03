@@ -1,7 +1,5 @@
 package com.map_properties.spring_server.dto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +11,11 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private Long id;
-    private String name;
-    private String code;
-    private Integer sort;
-    private Date createdAt;
-    private Date updatedAt;
+public class PaginationDTO {
+    private Integer count;
+    private Boolean hasMoreItems;
+    private Integer itemsPerPage;
+    private Integer page;
+    private Long total;
+    private Integer totalPage;
 }

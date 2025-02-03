@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.map_properties.spring_server.entity.User;
-import com.map_properties.spring_server.enums.ERole;
 import com.map_properties.spring_server.repository.UserRepository;
 
 import java.security.Key;
@@ -33,6 +32,9 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     private String SECRET;
 
+    @Value("${security.jwt.expiration}")
+    private Long expiredIn;
+
     @Autowired
     UserRepository userRepository;
 
@@ -49,17 +51,16 @@ public class JwtService {
 
     // Create a JWT token with specified claims and subject (user name)
     private Map<String, Object> createToken(Map<String, Object> claims, String email) {
-        Integer expiredIn = 1000 * 60 * 30;
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token valid for 30 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + expiredIn)) // Token valid for 30 minutes
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
         Map<String, Object> response = new HashMap<>();
         response.put("access_token", token);
-        response.put("expires_in", expiredIn);
+        response.put("expires_in", expiredIn / 1000);
         return response;
     }
 

@@ -13,13 +13,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
     @Id
@@ -29,11 +35,11 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
-    private Integer sort;
-
     @Column(nullable = false, unique = true, length = 20)
     private String code;
+
+    @Column(columnDefinition = "SMALLINT", nullable = false)
+    private Integer sort;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
