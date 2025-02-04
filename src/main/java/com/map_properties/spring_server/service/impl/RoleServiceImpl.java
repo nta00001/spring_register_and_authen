@@ -35,11 +35,11 @@ public class RoleServiceImpl implements RoleService {
             ListResponseDTO<RoleDTO> listResponse = listResponseMapper.toDTO(pageRoles);
             return listResponse;
         }
-        if (request.getCreatedAt() != null) {
+        if (request.getStartCreatedAtDate() != null || request.getEndCreatedAtDate() != null) {
             spec = spec.and(
                     RoleSpecification.filterCreatedAt(request.getStartCreatedAtDate(), request.getEndCreatedAtDate()));
         }
-        if (request.getUpdatedAt() != null) {
+        if (request.getStartUpdatedAtDate() != null || request.getEndUpdatedAtDate() != null) {
             spec = spec.and(
                     RoleSpecification.filterUpdatedAt(request.getStartUpdatedAtDate(), request.getEndUpdatedAtDate()));
         }

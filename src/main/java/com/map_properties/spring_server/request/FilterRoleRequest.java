@@ -18,8 +18,6 @@ public class FilterRoleRequest extends BaseListRequest {
     private String name;
     private String code;
     private Integer sort;
-    private Date createdAt;
-    private Date updatedAt;
 
     @Override
     public Sort getDefaultSort() {
