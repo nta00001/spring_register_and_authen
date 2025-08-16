@@ -38,7 +38,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/welcome", "/web-authenticate")
+                        .requestMatchers("/welcome", "/web-authenticate","/register")
                         .permitAll()
                         .requestMatchers("/error/**").permitAll()
                         .anyRequest().authenticated())
@@ -66,4 +66,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+
 }

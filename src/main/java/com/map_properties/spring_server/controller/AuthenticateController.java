@@ -5,6 +5,8 @@ import com.map_properties.spring_server.dto.AuthResponseDTO;
 import com.map_properties.spring_server.dto.UserWithRolesDetailDTO;
 
 import com.map_properties.spring_server.service.AuthenticationService;
+import com.map_properties.spring_server.request.RegisterRequest;
+import com.map_properties.spring_server.dto.UserDTO;
 
 import jakarta.validation.Valid;
 
@@ -30,5 +32,11 @@ public class AuthenticateController {
     public ResponseEntity<AuthResponseDTO> webAuthenticate(@Valid @RequestBody AuthRequest authRequest) {
         AuthResponseDTO authResponse = authService.webAuthenticate(authRequest);
         return ResponseEntity.ok(authResponse);
+    }
+
+    @PostMapping("/register") //
+    public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        UserDTO newUser = authService.register(registerRequest);
+        return ResponseEntity.ok(newUser);
     }
 }

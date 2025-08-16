@@ -38,7 +38,7 @@ public class JwtService {
     @Autowired
     UserRepository userRepository;
 
-    // Generate token with given user name
+    // Generate token with given
     @Transactional
     public Map<String, Object> generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
@@ -49,7 +49,7 @@ public class JwtService {
         return createToken(claims, email);
     }
 
-    // Create a JWT token with specified claims and subject (user name)
+    // Create a JWT token with specified claims and subject
     private Map<String, Object> createToken(Map<String, Object> claims, String email) {
         String token = Jwts.builder()
                 .setClaims(claims)
