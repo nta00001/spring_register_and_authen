@@ -9,13 +9,16 @@ A bash script to create an automatic log archive tool.
    ```shell
    cp .env.example .env.local
    ```
-
+    - Cấu hình các biến môi trường trong file `.env.local` theo ý muốn.
+    - 
 2. **Seeder**
 
    add arguments
 
    ```shell
-    --seeder=all
+    ./mvnw spring-boot:run "-Dspring-boot.run.arguments=--seeder=all" 
+    ./mvnw spring-boot:run
+
    ```
 
 3. **Phân quyền**
