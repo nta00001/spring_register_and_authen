@@ -25,7 +25,7 @@ public class RoleController {
     RoleService roleService;
 
     @GetMapping("")
-    public ResponseEntity<ListResponseDTO<RoleDTO>> index(@Nullable @RequestBody FilterRoleRequest request) {
+    public ResponseEntity<ListResponseDTO<RoleDTO>> index(FilterRoleRequest request) {
         ListResponseDTO<RoleDTO> roles = roleService.getRoles(request);
         return ResponseEntity.ok(roles);
     }

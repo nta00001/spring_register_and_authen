@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.map_properties.spring_server.dto.ProductDTO;
 import com.map_properties.spring_server.entity.Product;
+import java.util.UUID; // Thêm import này
 
 @Component
 public class ProductMapperImpl implements ProductMapper {
@@ -33,16 +34,19 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
-        return Product.builder()
-                .id(productDTO.getId())
-                .uuid(productDTO.getUuid())
-                .name(productDTO.getName())
-                .description(productDTO.getDescription())
-                .price(productDTO.getPrice())
-                .stock(productDTO.getStock())
-                .imageUrl(productDTO.getImageUrl())
-                .createdAt(productDTO.getCreatedAt())
-                .updatedAt(productDTO.getUpdatedAt())
-                .build();
+        // Thay vì dùng builder, chúng ta tạo một đối tượng Product mới.
+        // Điều này sẽ kích hoạt việc tự động tạo UUID trong file Product.java
+        Product product = new Product();
+
+        // Cập nhật các trường từ DTO
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
+
+        // Chúng ta không cần set id, uuid, createdAt, updatedAt vì chúng sẽ được quản lý tự động.
+
+        return product;
     }
 }

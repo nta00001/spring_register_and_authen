@@ -23,7 +23,7 @@ public class AdminUserController {
 
     @GetMapping("")
     @RequireRoles({ERole.ROLE_ADMIN})
-    public ResponseEntity<ListResponseDTO<UserWithRolesDTO>> getAllUsers(@RequestBody(required = false) FilterUserRequest request) {
+    public ResponseEntity<ListResponseDTO<UserWithRolesDTO>> getAllUsers(FilterUserRequest request) {
         return ResponseEntity.ok(adminUserService.getAllUsers(request));
     }
 

@@ -22,7 +22,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<ListResponseDTO<ProductDTO>> getProducts(@RequestBody(required = false) FilterProductRequest request) {
+    public ResponseEntity<ListResponseDTO<ProductDTO>> getProducts(FilterProductRequest request) {
         return ResponseEntity.ok(productService.getProducts(request));
     }
 

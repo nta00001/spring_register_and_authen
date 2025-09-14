@@ -23,7 +23,7 @@ public class AdminOrderController {
 
     @GetMapping("")
     @RequireRoles({ERole.ROLE_ADMIN})
-    public ResponseEntity<ListResponseDTO<OrderDTO>> getAllOrders(@RequestBody(required = false) FilterOrderRequest request) {
+    public ResponseEntity<ListResponseDTO<OrderDTO>> getAllOrders(FilterOrderRequest request) {
         return ResponseEntity.ok(adminOrderService.getAllOrders(request));
     }
 
