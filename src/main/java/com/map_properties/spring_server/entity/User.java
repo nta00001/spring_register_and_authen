@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private String avatarUrl;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean enabled = true;
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
@@ -90,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.enabled;
     }
 
     @Override
@@ -100,6 +103,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }
